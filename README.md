@@ -51,3 +51,5 @@ Requires Java 8 or higher.
 - It's not that hard do get the highest Array position
 - Explicit Cast with OOP Classes it ist simple when you did it once
 
+## Demo
+You have to test this Local in your Console
