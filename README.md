@@ -9,9 +9,9 @@ User input is validated through a central scanInt method which throws custom exc
 
 **Media Types**
 
-Film – has a title, genre, duration and description
-Game – has a title, genre, duration and supported platforms
-Newsletter – has a title, content and an edition number
+- Film – has a title, genre, duration and description
+- Game – has a title, genre, duration and supported platforms
+- Newsletter – has a title, content and an edition number
 
 ## How to Run
 
