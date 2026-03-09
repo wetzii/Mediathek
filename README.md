@@ -1,4 +1,3 @@
-
 ## Mediathek – Digital Media Library
 A console-based Java application that manages a collection of digital media and newsletters.
 
@@ -21,7 +20,7 @@ User input is validated through a central scanInt method which throws custom exc
 3. Run `Mediathek.java` as Java Application
 
 ### Option 2 – Run the JAR (Recommended)
-1. Download the latest release from the [Releases]() tab
+1. Download the latest release from the [Releases](https://github.com/wetzii/Mediathek/releases/tag/V.1.1) tab
 2. Open your terminal and navigate to the download folder
 3. Run:
 ```
@@ -76,5 +75,3 @@ Mediathek        (main class)
 
 - It's not that hard do get the highest Array position
 - Explicit Cast with OOP Classes it ist simple when you did it once
-
-
