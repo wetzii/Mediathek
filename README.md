@@ -6,7 +6,11 @@ A console-based Java application that manages a collection of digital media and 
 The app lets you browse and interact with a library of films and games. You can rate any media from 1 to 5, view average ratings and the number of ratings, and play media which tracks the total and maximum play minutes across your session. For films specifically there is a keyword search feature that searches through the film description. Newsletters can be read or searched by keyword as well.
 Exception Handling
 User input is validated through a central scanInt method which throws custom exceptions – InvalidInputException for out of range numbers and WrongTypeException for wrong data types like letters instead of numbers.
-Media Types
+
+* Media Types
+Film – has a title, genre, duration and description
+Game – has a title, genre, duration and supported platforms
+Newsletter – has a title, content and an edition number
 
 ## How to Run
 
@@ -27,9 +31,7 @@ java -jar Mediathek.jar
 
 
 
-Film – has a title, genre, duration and description
-Game – has a title, genre, duration and supported platforms
-Newsletter – has a title, content and an edition number
+
 
 ## Tech
 Pure Java, no external libraries
