@@ -19,8 +19,9 @@ public class Game extends DigitalMedia {
 		
 			System.out.println("Mögliche Consolen: ");
 		for(int i = 0; i < possibleConsoles.length;i++) {
-			System.out.println(possibleConsoles[i] + " ");
+			System.out.print(possibleConsoles[i] + " ");
 			}
+		System.out.println("");
 		}
 		
 	}

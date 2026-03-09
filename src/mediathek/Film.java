@@ -21,11 +21,12 @@ public class Film extends DigitalMedia implements SearchInterface {
 		return movieLen;
 	}
 	@Override
-	public boolean searchFor(String keyword) {
+	public void searchFor(String keyword) {
 		if(description.contains(keyword)) {
 			System.out.printf("Das Wort %s kommt in dem Film %s vor\n",keyword,super.getTitle() );
-			return true;
+		}else {
+			System.out.printf("Das Wort '%s' kommt nicht im Film %s vor\n", keyword, getTitle());
+	
 		}
-	return false;
 	}
 }

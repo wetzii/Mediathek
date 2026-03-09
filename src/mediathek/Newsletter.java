@@ -21,11 +21,12 @@ public class Newsletter implements SearchInterface {
         System.out.println(news);
 	}
     @Override
-    public boolean searchFor(String keyword) {
+    public void searchFor(String keyword) {
 		if(news.contains(keyword)) {
 			System.out.printf("Das Wort %s kommt in dem Newsleter %s vor\n",keyword, title );
-			return true;
+		}else {
+			System.out.printf("Das wort '%s' kommt nicht im Newsletter %s vor\n",  keyword, getTitle());
 		}
-	return false;
+
 	}
 }
