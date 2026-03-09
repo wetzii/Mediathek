@@ -7,7 +7,8 @@ The app lets you browse and interact with a library of films and games. You can 
 Exception Handling
 User input is validated through a central scanInt method which throws custom exceptions – InvalidInputException for out of range numbers and WrongTypeException for wrong data types like letters instead of numbers.
 
-* Media Types
+**Media Types**
+
 Film – has a title, genre, duration and description
 Game – has a title, genre, duration and supported platforms
 Newsletter – has a title, content and an edition number
@@ -53,7 +54,7 @@ Mediathek        (main class)
 
 ---
 
-## What it can do
+## Description
 
 - Films and Games are stored in a shared DigitalMedia array
 - Newsletters are a separate array
