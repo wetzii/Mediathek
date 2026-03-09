@@ -2,17 +2,25 @@ package mediathek;
 
 import java.util.Scanner;
 
+// Code got a bit messy from adding things over time
+
 public class Mediathek {
 	public static void main(String[] args) {
 	    DigitalMedia[] digitalMedia = createFilmGames();
 	    Newsletter[] news = createNews();
-	    int[] playMinutes = new int[10];   
-	    int playMinutesCount = 0;          
+	    int[] playMinutes = new int[10];
+	    int playMinutesCount = 0;
 	    Scanner scan = new Scanner(System.in);
 	    while (true) {
 	        printMenu();
-	        int choice = scanInt(0, 6, scan);
-	        playMinutesCount = doActivity(choice, digitalMedia, news, scan, playMinutes, playMinutesCount);
+	        try {
+	            int choice = scanInt(0, 6, scan);
+	            playMinutesCount = doActivity(choice, digitalMedia, news, scan, playMinutes, playMinutesCount);
+	        } catch (InvalidInputException e) {
+	            System.out.println("Error: " + e.getMessage());
+	        } catch (WrongTypeException e) {
+	            System.out.println("Type error: " + e.getMessage());
+	        }
 	        if (playMinutesCount == -1) {
 	            System.out.println("See you next time!");
 	            break;
@@ -53,7 +61,7 @@ public class Mediathek {
 	    System.out.println("(0) -- Exit");
 	}
 
-	public static void digitalMediaMenu() { 
+	public static void digitalMediaMenu() {
 		System.out.println("(1) --> Rate");
 		System.out.println("(2) --> Show rating");
 		System.out.println("(3) --> Show number of ratings");
@@ -69,6 +77,10 @@ public class Mediathek {
 	        int rating = scanInt(1, 5, scan); // range check handled by scanInt
 	        media.rate(rating);
 	        System.out.println("Rating added!");
+	    } catch (InvalidInputException e) {
+	        System.out.println("Input error: " + e.getMessage());
+	    } catch (WrongTypeException e) {
+	        System.out.println("Type error: " + e.getMessage());
 	    } catch (Exception e) {
 	        System.out.println("Error: max ratings reached."); // thrown when already 5 ratings
 	    }
@@ -107,28 +119,25 @@ public class Mediathek {
 		}
 	}
 
-	public static int scanInt(int min, int max, Scanner scan) { // single place for input validation
-		System.out.println("");
-	    int choice = -1;
-	    while (choice < min || choice > max) {
-	        System.out.print("Your input: ");
-	        try {
-	            choice = scan.nextInt();
-	            if (choice < min || choice > max) {
-	                System.out.println("Please enter a number between " + min + " and " + max + ".");
-	            }
-	        } catch (Exception e) {
-	            System.out.println("Invalid input!");
-	            scan.nextLine();
+	public static int scanInt(int min, int max, Scanner scan) throws InvalidInputException, WrongTypeException {
+		// main input method - catches two big error sources: wrong type and out of range
+	    System.out.print("Your input: ");
+	    try {
+	        int choice = scan.nextInt();
+	        scan.nextLine(); // clear line break
+	        if (choice < min || choice > max) {
+	            throw new InvalidInputException("Number out of range! Please enter between " + min + " and " + max + ".");
 	        }
+	        return choice;
+	    } catch (Exception e) {
+	        scan.nextLine(); // clear bad input
+	        throw new WrongTypeException("Not an integer! Please enter a whole number.");
 	    }
-	    scan.nextLine(); // clear line break
-	    System.out.println("");
-	    return choice;
 	}
 
 	public static int chooseActivityDigital(Scanner scan, DigitalMedia[] media, int[] playMinutes, int playMinutesCount) {
-	    int choice = scanInt(0, 6, scan);
+		try {
+	    int choice = scanInt(0, 6, scan); // selection for all digital media functions
 
 	    switch (choice) {
 	    // null checks in each case are redundant but safe
@@ -196,6 +205,11 @@ public class Mediathek {
 	    case 0:
 	        return 0;
 	    }
+		} catch (InvalidInputException e) {
+	        System.out.println("Error: " + e.getMessage());
+	    } catch (WrongTypeException e) {
+	        System.out.println("Type error: " + e.getMessage());
+	    }
 
 	    return playMinutesCount;
 	}
@@ -229,8 +243,8 @@ public class Mediathek {
 	        System.out.println("Maximum entries reached!");
 	        return playMinutesCount;
 	    }
-	    playMinutes[playMinutesCount] = media.getPlayMinutes();
-	    playMinutesCount++;
+	    playMinutes[playMinutesCount] = media.getPlayMinutes(); // add time to array
+	    playMinutesCount++; // current index moves up by one
 	    System.out.printf("'%s' is now playing! (%d minutes added)\n", media.getTitle(), media.getPlayMinutes());
 	    return playMinutesCount;
 	}
@@ -258,24 +272,30 @@ public class Mediathek {
 	}
 
 	public static void chooseActivityNewsletter(Scanner scan, Newsletter[] news) {
-	    printNews(news, -1); // -1 because +2 is added later
-	    System.out.println("Which newsletter?");
-	    int idx = scanInt(1, news.length, scan);
-	    Newsletter selected = news[idx - 1];
+	    try {
+	        printNews(news, -1); // -1 because +2 is added later
+	        System.out.println("Which newsletter?");
+	        int idx = scanInt(1, news.length, scan);
+	        Newsletter selected = news[idx - 1];
 
-	    System.out.println("(1) --> Read");
-	    System.out.println("(2) --> Search by keyword");
-	    int action = scanInt(1, 2, scan);
+	        System.out.println("(1) --> Read");
+	        System.out.println("(2) --> Search by keyword");
+	        int action = scanInt(1, 2, scan);
 
-	    switch (action) {
-	        case 1:
-	            selected.read();
-	            break;
-	        case 2:
-	            System.out.print("Keyword: ");
-	            String keyword = scan.nextLine();
-	            selected.searchFor(keyword);
-	            break;
+	        switch (action) {
+	            case 1:
+	                selected.read();
+	                break;
+	            case 2:
+	                System.out.print("Keyword: ");
+	                String keyword = scan.nextLine();
+	                selected.searchFor(keyword);
+	                break;
+	        }
+	    } catch (InvalidInputException e) {
+	        System.out.println("Error: " + e.getMessage());
+	    } catch (WrongTypeException e) {
+	        System.out.println("Type error: " + e.getMessage());
 	    }
 	}
 
