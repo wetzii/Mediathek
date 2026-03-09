@@ -23,9 +23,9 @@ public class Newsletter implements SearchInterface {
     @Override
     public void searchFor(String keyword) {
 		if(news.contains(keyword)) {
-			System.out.printf("Das Wort %s kommt in dem Newsleter %s vor\n",keyword, title );
+			System.out.printf("The word '%s' is included in the Newsletter %s\n",keyword, title );
 		}else {
-			System.out.printf("Das wort '%s' kommt nicht im Newsletter %s vor\n",  keyword, getTitle());
+			System.out.printf("The word '%s' is not included in the Newsletter %s\n",  keyword, getTitle());
 		}
 
 	}

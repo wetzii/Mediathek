@@ -23,9 +23,9 @@ public class Film extends DigitalMedia implements SearchInterface {
 	@Override
 	public void searchFor(String keyword) {
 		if(description.contains(keyword)) {
-			System.out.printf("Das Wort %s kommt in dem Film %s vor\n",keyword,super.getTitle() );
+			System.out.printf("The word '%s' is included in the movie description of %s\n",keyword,super.getTitle() );
 		}else {
-			System.out.printf("Das Wort '%s' kommt nicht im Film %s vor\n", keyword, getTitle());
+			System.out.printf("The word '%s' is not included in the movie description of%s vor\n", keyword, getTitle());
 	
 		}
 	}

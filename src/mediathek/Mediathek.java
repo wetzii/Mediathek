@@ -2,7 +2,7 @@ package mediathek;
 
 import java.util.Scanner;
 
-// Code got a bit messy from adding things over time
+// Code can be a bit confusing, had to keep adding things throughout
 
 public class Mediathek {
 	public static void main(String[] args) {
@@ -46,8 +46,8 @@ public class Mediathek {
         return newsletters;
 	}
 
-	public static void printAllMedia(DigitalMedia[] digitalMedias, Newsletter[] news) {
-		int lastPos = printDigitalMedia(digitalMedias, "Game"); // condition empty = show all
+	public static void printAllMedien(DigitalMedia[] digitalMedias, Newsletter[] news) {
+		int lastPos = printDigitalMedia(digitalMedias, ""); // condition stays empty in this case
 		printNews(news, lastPos);
 	}
 
@@ -77,10 +77,6 @@ public class Mediathek {
 	        int rating = scanInt(1, 5, scan); // range check handled by scanInt
 	        media.rate(rating);
 	        System.out.println("Rating added!");
-	    } catch (InvalidInputException e) {
-	        System.out.println("Input error: " + e.getMessage());
-	    } catch (WrongTypeException e) {
-	        System.out.println("Type error: " + e.getMessage());
 	    } catch (Exception e) {
 	        System.out.println("Error: max ratings reached."); // thrown when already 5 ratings
 	    }
@@ -93,7 +89,7 @@ public class Mediathek {
 	public static int printDigitalMedia(DigitalMedia[] digitalMedias, String condition) {
 		int lastPos = 0;
 		for (int i = 0; i < digitalMedias.length; i++) {
-			// condition filters by class name, empty string = show all
+			// condition checks class name, empty string = show all
 			if (digitalMedias[i].getClass().getSimpleName().equals(condition) || condition.equals("")) {
 			    System.out.printf("----------%s---------\n", getDigitalMediaClassName(digitalMedias[i]));
 			    if (digitalMedias[i] != null) {
@@ -108,19 +104,18 @@ public class Mediathek {
 		return lastPos; // used so newsletter numbering continues from here
 	}
 
-	public static void printNews(Newsletter[] news, int startCountPos) {
-		for (int idx = 0; idx < news.length; idx++) {
+	public static void printNews(Newsletter[] news, int startCpuntPos) {
+		for (int idx = 0; idx < news.length; idx++) { // numbering starts at startCountPos, can be 0 or end value of printDigitalMedia
 			System.out.println("----------News---------");
 			if (news[idx] != null) {
-				System.out.printf("(%d)--> %s\n", idx + startCountPos + 2, news[idx].getTitle()); // +2 so numbering starts at 1
+				System.out.printf("(%d)--> %s\n", idx + startCpuntPos + 2, news[idx].getTitle()); // +2 because it starts at 0 twice but I want it to start at 1
 			} else {
 				break;
 			}
 		}
 	}
 
-	public static int scanInt(int min, int max, Scanner scan) throws InvalidInputException, WrongTypeException {
-		// main input method - catches two big error sources: wrong type and out of range
+	public static int scanInt(int min, int max, Scanner scan) throws InvalidInputException, WrongTypeException { // very important to catch here - extremely high error source e.g. out of range or data type errors
 	    System.out.print("Your input: ");
 	    try {
 	        int choice = scan.nextInt();
@@ -130,23 +125,23 @@ public class Mediathek {
 	        }
 	        return choice;
 	    } catch (Exception e) {
-	        scan.nextLine(); // clear bad input
-	        throw new WrongTypeException("Not an integer! Please enter a whole number.");
+	        scan.nextLine();
+	        throw new WrongTypeException("No integer entered!");
 	    }
 	}
 
-	public static int chooseActivityDigital(Scanner scan, DigitalMedia[] media, int[] playMinutes, int playMinutesCount) {
+	public static int chooseActityDigital(Scanner scan, DigitalMedia[] media, int[] playMinutes, int playMinutesCount) {
 		try {
-	    int choice = scanInt(0, 6, scan); // selection for all digital media functions
+	    int choice = scanInt(0, 6, scan); // selection for all possible digital media functions
 
 	    switch (choice) {
 	    // null checks in each case are redundant but safe
 	    case 1:
 	        printDigitalMedia(media, "");
 	        System.out.println("Which media do you want to rate: ");
-	        int i = scanInt(0, media.length - 1, scan);
-	        if (media[i] != null) {
-	            rate(media[i], scan);
+	        int i = scanInt(1, media.length, scan);
+	        if (media[i - 1] != null) {
+	            rate(media[i - 1], scan);
 	        } else {
 	            System.out.println("Invalid input");
 	        }
@@ -155,9 +150,9 @@ public class Mediathek {
 	    case 2:
 	        printDigitalMedia(media, "");
 	        System.out.println("Which media's rating do you want to see?");
-	        int a = scanInt(0, media.length - 1, scan);
-	        if (media[a] != null) {
-	            System.out.println("Average rating: " + media[a].getAvgRating());
+	        int a = scanInt(1, media.length, scan);
+	        if (media[a - 1] != null) {
+	            System.out.println("Average rating: " + media[a - 1].getAvgRating());
 	        } else {
 	            System.out.println("Invalid input");
 	        }
@@ -166,9 +161,9 @@ public class Mediathek {
 	    case 3:
 	        printDigitalMedia(media, "");
 	        System.out.println("Which media's number of ratings do you want to see?");
-	        int b = scanInt(0, media.length - 1, scan);
-	        if (media[b] != null) {
-	            System.out.println("Number of ratings: " + media[b].getNumberOfRatings());
+	        int b = scanInt(1, media.length, scan);
+	        if (media[b - 1] != null) {
+	            System.out.println("Number of ratings: " + media[b - 1].getNumberOfRatings());
 	        } else {
 	            System.out.println("Invalid input");
 	        }
@@ -189,7 +184,7 @@ public class Mediathek {
 	        printDigitalMedia(media, "Film"); // only show films
 	        System.out.println("Which film do you want to search?");
 	        int d = scanInt(1, media.length, scan);
-	        if (media[d - 1] instanceof Film) {
+	        if (media[d - 1] instanceof Film) {   // only if it is a Film
 	            System.out.print("Keyword: ");
 	            String keyword = scan.nextLine();
 	            ((Film) media[d - 1]).searchFor(keyword); // cast needed here
@@ -205,7 +200,7 @@ public class Mediathek {
 	    case 0:
 	        return 0;
 	    }
-		} catch (InvalidInputException e) {
+	    } catch (InvalidInputException e) {
 	        System.out.println("Error: " + e.getMessage());
 	    } catch (WrongTypeException e) {
 	        System.out.println("Type error: " + e.getMessage());
@@ -218,13 +213,13 @@ public class Mediathek {
 	    switch (choice) {
 	        case 1:
 	            digitalMediaMenu();
-	            playMinutesCount = chooseActivityDigital(scan, digMedia, playMinutes, playMinutesCount);
+	            playMinutesCount = chooseActityDigital(scan, digMedia, playMinutes, playMinutesCount);
 	            break;
 	        case 2:
 	            chooseActivityNewsletter(scan, news);
 	            break;
 	        case 3:
-	            printAllMedia(digMedia, news);
+	            printAllMedien(digMedia, news);
 	            break;
 	        case 4:
 	            getSumPlayMinutes(playMinutes, playMinutesCount);
@@ -243,8 +238,8 @@ public class Mediathek {
 	        System.out.println("Maximum entries reached!");
 	        return playMinutesCount;
 	    }
-	    playMinutes[playMinutesCount] = media.getPlayMinutes(); // add time to array
-	    playMinutesCount++; // current index moves up by one
+	    playMinutes[playMinutesCount] = media.getPlayMinutes(); // time gets added to array
+	    playMinutesCount++; // current index increases by one
 	    System.out.printf("'%s' is now playing! (%d minutes added)\n", media.getTitle(), media.getPlayMinutes());
 	    return playMinutesCount;
 	}
@@ -265,7 +260,7 @@ public class Mediathek {
 	    int max = playMinutes[0];
 	    for (int i = 1; i < count; i++) {
 	        if (playMinutes[i] > max) {
-	            max = playMinutes[i]; // always keep the higher value
+	            max = playMinutes[i]; // always overwrite with the higher number
 	        }
 	    }
 	    System.out.println("Maximum minutes: " + max);
