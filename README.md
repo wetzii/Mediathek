@@ -15,7 +15,7 @@ Media Types
 2. Open in Eclipse or IntelliJ
 3. Run `Mediathek.java` as Java Application
 
-### Option 2 – Run the JAR
+### Option 2 – Run the JAR (Recommended)
 1. Download the latest release from the [Releases]() tab
 2. Open your terminal and navigate to the download folder
 3. Run:
